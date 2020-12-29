@@ -1,9 +1,8 @@
 package com.baartmans.jstratego2021;
 
 import com.baartmans.jstratego2021.gamelogic.GameState;
+import com.baartmans.jstratego2021.gamelogic.MoveResponse;
 import com.baartmans.jstratego2021.gamelogic.Pawn;
-
-import java.time.temporal.TemporalAmount;
 
 public class GameService{
 
@@ -16,14 +15,10 @@ public class GameService{
         //Build the teams
 
         // Team1
-
-        //int[] team1Location = new int[2];
-
-
         int[] team1Location1 = {0,0};
         int[] team1Location2 = {0,1};
         int[] team1Location3 = {0,2};
-        int[] team1Location4 = {0,3};
+        int[] team1Location4 = {0,4};
 
 
         Pawn[] team1 = new Pawn[4];
@@ -50,4 +45,11 @@ public class GameService{
 
         return newGame;
     }
+
+    public MoveResponse doMove(){
+        MoveResponse mr = new MoveResponse();
+        return mr;
+    }
 }
+
+

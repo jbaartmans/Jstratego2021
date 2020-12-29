@@ -8,7 +8,7 @@ public class MoveResponse {
 
     public MoveResponse(){
         isValidMove = false;
-        responseMessage = "TEST";
+        responseMessage = "HENK TEST";
         gameStatus = "IN_PROGRESS";
     }
 
