@@ -2,7 +2,7 @@ package com.baartmans.jstratego2021.gamelogic;
 
 public class Pawn {
 
-    private  String type;
+    private String type;
     private int[] location;
 
     public Pawn(String type, int[] location){
