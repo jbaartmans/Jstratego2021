@@ -6,10 +6,10 @@ public class MoveResponse {
     private String responseMessage;
     private String gameStatus;
 
-    public MoveResponse(){
-        isValidMove = false;
-        responseMessage = "HENK TEST";
-        gameStatus = "IN_PROGRESS";
+    public MoveResponse(boolean isValidMove, String responseMessage, String gameStatus){
+        this.isValidMove = isValidMove;
+        this.responseMessage = responseMessage;
+        this.gameStatus = gameStatus;
     }
 
     public boolean isValidMove() {

@@ -10,7 +10,6 @@ public class Pawn {
         this.location = location;
     }
 
-
     public String getType() {
         return type;
     }

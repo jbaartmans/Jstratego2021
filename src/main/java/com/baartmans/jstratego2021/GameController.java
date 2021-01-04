@@ -1,6 +1,7 @@
 package com.baartmans.jstratego2021;
 
 import com.baartmans.jstratego2021.gamelogic.GameState;
+import com.baartmans.jstratego2021.gamelogic.Move;
 import com.baartmans.jstratego2021.gamelogic.MoveResponse;
 import com.baartmans.jstratego2021.gamelogic.Pawn;
 import org.springframework.http.MediaType;
@@ -25,16 +26,14 @@ public class GameController {
 
     @CrossOrigin
     @RequestMapping(value = "/domove", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public GameState doMove(@RequestBody GameState gamestate) {
-        //GameService a = new GameService(); //?? waarom weer een nieuwe instantie?
+    public MoveResponse doMove(@RequestBody GameState gamestate) {
 
-        System.out.println("DoMove wordt aangeroepen");
-        for(Pawn i : gamestate.getTeam2()){
-            System.out.println(i.getType() + " " + i.getLocation()[0] + ":" + i.getLocation()[1] );
-        }
-        //return  gs.doMove();
-
-        return gamestate;
+        //Omdat we uit de doMove alleen nog de GameState krijgen en niet de nog de Move maken we hier zelf een object aan om in ieder geval de logica in de GameService op te kunnen gaan zetten
+        int[] from = {0,6};
+        int[] to = {9,3};
+        Move move = new Move(from,to);
+        return  gs.doMove(gamestate, move);
+        //return gamestate;
     }
 
 //    @GetMapping("/error")
