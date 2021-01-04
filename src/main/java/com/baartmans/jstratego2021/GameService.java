@@ -15,7 +15,7 @@ public class GameService{
 
     static{
         /*Adding elements to HashMap*/
-        typesAndRanks.put("Marshall", 10);
+        typesAndRanks.put("Marshal", 10);
         typesAndRanks.put("General", 9);
         typesAndRanks.put("Colonel", 8);
         typesAndRanks.put("Major", 7);
@@ -118,8 +118,7 @@ public class GameService{
     public static int getRandom(int max){ // return (int) (Math.random()*max); //incorrect always return zero
          return (int) (Math.random()*max);
     }
-
-    // WIP
+    
     public MoveResponse doMove(GameState gameState, Move move){
 
         //Could be other team in future
@@ -199,45 +198,23 @@ public class GameService{
             }
         }
 
+        // Is de move  zelf valide? //TODO
+        // Is deze niet te groot of schuin? //TODO
+
         for(Pawn pawn : enemyTeam) {
             if (pawn.getLocation()[0] == move.getTo()[0]
                     && pawn.getLocation()[1] == move.getTo()[1]){
-
                 //Move is to an enemy piece!
                 System.out.println("Move is naar de tegenstander");
-
-
-
                 return doAttack(currentPawn, pawn);
             }
         }
 
         return new MoveResponse(
                 true,
-                "Piece moved to .....",
+                "Piece moved to [" + move.getTo()[0] + ","  + move.getTo()[1] + "]",
                 GameStatus.PLAYING.toString()
         );
-
-        // Checks stappen plan:
-
-        // Bestaat dit stuk? --> Done
-        // Is het een eigen stuk? --> Done
-
-        // Mag het stuk wel bewegen?  Vlag en Bomb mogen niet bewegen namelijk --> Done
-
-        // Is de move  zelf valide? //TODO
-        // Is deze niet te groot of schuin? //TODO
-
-        // Is de to locatie niet in een van de twee meren? --> Done
-
-        // Staat er een ander eigen stuk? Is het To locatie niet al bezet? --> Done
-
-        // Staat er een stuk van de tegenstander?
-            // Is het vlag? --> WIN --> Done
-            // Is het een bom --?
-            // Ben jelf een mineur een is de to en bomb --> maak bomb onschadelijk
-            // Ben je zelf een Spion en val je de Maarschalk aan?
-            // Wie heeft de hoogste rang?
     }
 
     private MoveResponse doAttack(Pawn attackingPawn, Pawn defendingPawn){
@@ -254,11 +231,41 @@ public class GameService{
             );
         }
 
-        //TODO: scenario's met BOMB en SPION
-        System.out.println("attackingPawnType: " + attackingPawnType);
-        System.out.println("defendingPawnType: " + defendingPawnType);
+        //Is het verdedigende stuk een Bomb?
+        if(defendingPawnType.equalsIgnoreCase("Bomb")){
 
+            // Een Miner kan de Bomb onschadelijk maken
+            if(attackingPawnType.equalsIgnoreCase("Miner")){
+                return new MoveResponse(
+                        true,
+                        "Bomb has been removed by Miner",
+                        GameStatus.PLAYING.toString(),
+                        defendingPawn.getLocation()
+                );
+            } else {
+                return new MoveResponse(
+                        true,
+                        "Kaboom! Your " + attackingPawnType + " has been blown up bij a Bomb!",
+                        GameStatus.PLAYING.toString(),
+                        attackingPawn.getLocation()
+                );
+            }
+        }
+
+        // Een aanvallende Spy kan een verdedigende Marshal uitschakelen
+        if(attackingPawnType.equalsIgnoreCase("Spy")  && defendingPawnType.equalsIgnoreCase("Marshal")){
+                return new MoveResponse(
+                        true,
+                        "The Marshal has been killed by a Spy",
+                        GameStatus.PLAYING.toString(),
+                        defendingPawn.getLocation()
+                );
+        }
+
+        //Bepaal de rangen van de stukken
+        System.out.println("attackingPawnType" + attackingPawnType);
         int attackingPawnRank = GameService.typesAndRanks.get(attackingPawnType);
+        System.out.println("defendingPawnType" + defendingPawnType);
         int defendingPawnRank = GameService.typesAndRanks.get(defendingPawnType);
 
         //Bij gelijke rangen wint het het aanvallende stuk
@@ -267,14 +274,16 @@ public class GameService{
             return new MoveResponse(
                     true,
                     "You have won the attack with a " + attackingPawnType + " from a " + defendingPawnType,
-                    GameStatus.PLAYING.toString()
+                    GameStatus.PLAYING.toString(),
+                    defendingPawn.getLocation()
             );
         } else {
             //Verdediger wint!
             return new MoveResponse(
                     true,
                     "You have lost the attack with a " + attackingPawnType + " from a " + defendingPawnType,
-                    GameStatus.PLAYING.toString()
+                    GameStatus.PLAYING.toString(),
+                    attackingPawn.getLocation()
             );
         }
     }

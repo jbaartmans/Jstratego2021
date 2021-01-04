@@ -30,7 +30,7 @@ public class GameController {
 
         //Omdat we uit de doMove alleen nog de GameState krijgen en niet de nog de Move maken we hier zelf een object aan om in ieder geval de logica in de GameService op te kunnen gaan zetten
         int[] from = {0,6};
-        int[] to = {9,3};
+        int[] to = {0,5};
         Move move = new Move(from,to);
         return  gs.doMove(gamestate, move);
         //return gamestate;
