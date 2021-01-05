@@ -32,7 +32,7 @@ public class GameController {
         int[] from = {0,6};
         int[] to = {0,5};
         Move move = new Move(from,to);
-        return  gs.doMove(gamestate, move,1);
+        return  gs.doMove(gamestate, move,2);
         //return gamestate;
     }
 

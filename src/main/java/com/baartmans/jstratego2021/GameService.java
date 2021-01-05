@@ -5,8 +5,6 @@ import com.baartmans.jstratego2021.gamelogic.Move;
 import com.baartmans.jstratego2021.gamelogic.MoveResponse;
 import com.baartmans.jstratego2021.gamelogic.Pawn;
 import com.baartmans.jstratego2021.gamelogic.enums.GameStatus;
-
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class GameService {
@@ -123,12 +121,11 @@ public class GameService {
 
     public MoveResponse doMove(GameState gameState, Move move, int team) {
 
-        //Could be other team in future
         Pawn[] currentTeam = gameState.getTeam2();
         Pawn[] enemyTeam = gameState.getTeam1();
 
-        // Dit is een move voor de AI, dus zijn de teams omgewisselds
-        if(team == 2){
+        // Dit is een move voor de AI, dus zijn de teams omgewisseld
+        if(team == 1){
             currentTeam = gameState.getTeam1();
             enemyTeam = gameState.getTeam2();
         }
@@ -203,15 +200,11 @@ public class GameService {
             }
         }
 
-        // Is de move  zelf valide? //TODO
-        // Is deze niet te groot of schuin? //TODO
-
         for (Pawn pawn : enemyTeam) {
             if (pawn.getLocation()[0] == move.getTo()[0]
                     && pawn.getLocation()[1] == move.getTo()[1]) {
                 //Move is to an enemy piece!
-                System.out.println("Move is naar de tegenstander");
-                return doAttack(currentPawn, pawn);
+                return doAttack(currentPawn, pawn, team);
             }
         }
 
@@ -223,17 +216,23 @@ public class GameService {
         );
     }
 
-    private MoveResponse doAttack(Pawn attackingPawn, Pawn defendingPawn) {
+    private MoveResponse doAttack(Pawn attackingPawn, Pawn defendingPawn, int team) {
 
         String attackingPawnType = attackingPawn.getType();
         String defendingPawnType = defendingPawn.getType();
 
+        //Is this move by the AI (team == 1) or the human player(team == 2)
+        boolean humanTeam = team == 2;
+
         // Is de vlag gevangen?
         if (defendingPawnType.equalsIgnoreCase("Flag")) {
+            String message1 = humanTeam ? "You have caputured the Flag! You have won the game!" : "Your flag has been caputured by the enemy! You have lost the game!";
+            GameStatus gamestatus1 = humanTeam ? GameStatus.WON : GameStatus.LOST;
+
             return new MoveResponse(
                     true,
-                    "The flag has been caputured! You have won the game!",
-                    GameStatus.WON.toString()
+                     message1,
+                    gamestatus1.toString()
             );
         }
 
@@ -242,16 +241,18 @@ public class GameService {
 
             // Een Miner kan de Bomb onschadelijk maken
             if (attackingPawnType.equalsIgnoreCase("Miner")) {
+                String message2 = humanTeam ? "An enemy Bomb has been removed by Miner" : "Your Bomb has been removed by an enemy Miner";
                 return new MoveResponse(
                         true,
-                        "Bomb has been removed by Miner",
+                        message2,
                         GameStatus.PLAYING.toString(),
                         defendingPawn.getLocation()
                 );
             } else {
+                String message3 = humanTeam ? "Kaboom! Your" + attackingPawnType + " has been blown up by a enemy Bomb!" : "Kaboom! An enemy " + attackingPawnType + " has been blown up by your Bomb!";
                 return new MoveResponse(
                         true,
-                        "Kaboom! Your " + attackingPawnType + " has been blown up bij a Bomb!",
+                        message3,
                         GameStatus.PLAYING.toString(),
                         attackingPawn.getLocation()
                 );
@@ -260,9 +261,10 @@ public class GameService {
 
         // Een aanvallende Spy kan een verdedigende Marshal uitschakelen
         if (attackingPawnType.equalsIgnoreCase("Spy") && defendingPawnType.equalsIgnoreCase("Marshal")) {
+            String message4 = humanTeam ? "The enemy Marshal has been killed by your Spy" : "Your Marshal has been killed by an enemy Spy";
             return new MoveResponse(
                     true,
-                    "The Marshal has been killed by a Spy",
+                     message4,
                     GameStatus.PLAYING.toString(),
                     defendingPawn.getLocation()
             );
@@ -276,18 +278,20 @@ public class GameService {
 
         //Bij gelijke rangen wint het het aanvallende stuk
         if (attackingPawnRank >= defendingPawnRank) {
+            String message5 = humanTeam ? "You have won the attack with a " + attackingPawnType + " from a " + defendingPawnType : "The enemy has won the attack with a " + attackingPawnType + " from a " + defendingPawnType;
             //Aanvaller wint!
             return new MoveResponse(
                     true,
-                    "You have won the attack with a " + attackingPawnType + " from a " + defendingPawnType,
+                    message5,
                     GameStatus.PLAYING.toString(),
                     defendingPawn.getLocation()
             );
         } else {
             //Verdediger wint!
+            String message6 = humanTeam ? "You have lost the attack with a " + attackingPawnType + " from a " + defendingPawnType : "The enemy has lost the attack with a " + attackingPawnType + " from a " + defendingPawnType;
             return new MoveResponse(
                     true,
-                    "You have lost the attack with a " + attackingPawnType + " from a " + defendingPawnType,
+                    message6,
                     GameStatus.PLAYING.toString(),
                     attackingPawn.getLocation()
             );
@@ -295,24 +299,10 @@ public class GameService {
     }
 
     public MoveResponse doMoveAI(GameState gameState) {
-
-        //Plan
-        /*
-            1. Kies een stuk van  Teams 1; dat beweegbaar is.
-
-            2. Bepaal welke vlakken niet bezet zijn door Team1
-
-            3. Kies random plaats die niet bezet is door Team1
-
-            Doe 'doMove'
-                Als het een isValid Move is ga door, ander begin overnieuw
-
-
-         */
-
         Pawn[] currentTeam = gameState.getTeam1();
         Pawn currentPawn = null;
 
+        // Get a random pawn from the AI team (== team1)
         while (currentPawn == null) {
             int random = getRandom(currentTeam.length - 1);
             currentPawn = currentTeam[random];
@@ -327,26 +317,26 @@ public class GameService {
 
         //Welke plekken op het speelveld kunnen we nog naartoe, waar we zelf niet staan
         List<Pawn> availableLocations = getAvailableLocations(currentTeam);
-
-        System.out.println("Grootte::");
-        System.out.println(availableLocations.size());
-
         MoveResponse validMoveResponse = null;
 
+        // Proberen om een valide move te maken
         while(validMoveResponse == null){
-
+            //Haal een random locatie op waar nien een stuk van het eigen team staat
             int random = getRandom(availableLocations.size());
-
             int[] proposedLocation = availableLocations.get(random).getLocation();
 
             //Nieuwe move samenstellen
             Move proposedMove = new Move(currentPawn.getLocation(), proposedLocation);
 
             //Do de move
-            MoveResponse proposedMoveResponse = doMove(gameState, proposedMove,2);
+            MoveResponse proposedMoveResponse = doMove(gameState, proposedMove,1);
 
+            System.out.println("Voorstel voor een move gedaan");
+
+            //Is het een valide move, dan kunnen we uit de loop breaken
             if(proposedMoveResponse.isValidMove()){
                 validMoveResponse = proposedMoveResponse;
+                break;
             }
         }
 
@@ -364,7 +354,7 @@ public class GameService {
             }
         }
 
-        // Verwijder de plekken uit het volledige speelveld die al bezet zijn door het Team
+        // Verwijder de plekken uit het volledige speelveld die al bezet zijn door het Team(1)
         Iterator<Pawn> iterator = allAvailableLocations.iterator();
         while (iterator.hasNext()){
             Pawn availablePawn = iterator.next();
