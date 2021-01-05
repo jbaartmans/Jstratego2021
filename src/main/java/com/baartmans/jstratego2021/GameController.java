@@ -32,8 +32,14 @@ public class GameController {
         int[] from = {0,6};
         int[] to = {0,5};
         Move move = new Move(from,to);
-        return  gs.doMove(gamestate, move);
+        return  gs.doMove(gamestate, move,1);
         //return gamestate;
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/domove/ai", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public MoveResponse doMoveAI(@RequestBody GameState gamestate) {
+        return  gs.doMoveAI(gamestate);
     }
 
 //    @GetMapping("/error")
