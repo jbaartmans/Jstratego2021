@@ -6,6 +6,7 @@ public class MoveResponse {
     private String responseMessage;
     private String gameStatus;
     private int[] removePiece;
+    private  Move move;
 
     public MoveResponse(boolean isValidMove, String responseMessage, String gameStatus){
         this.isValidMove = isValidMove;
@@ -13,10 +14,18 @@ public class MoveResponse {
         this.gameStatus = gameStatus;
     }
 
-    public MoveResponse(boolean isValidMove, String responseMessage, String gameStatus, int[] removePiece){
+    public MoveResponse(boolean isValidMove, String responseMessage, String gameStatus, Move move){
         this.isValidMove = isValidMove;
         this.responseMessage = responseMessage;
         this.gameStatus = gameStatus;
+        this.move = move;
+    }
+
+    public MoveResponse(boolean isValidMove, String responseMessage, String gameStatus, Move move, int[] removePiece){
+        this.isValidMove = isValidMove;
+        this.responseMessage = responseMessage;
+        this.gameStatus = gameStatus;
+        this.move = move;
         this.removePiece = removePiece;
     }
 
@@ -47,4 +56,8 @@ public class MoveResponse {
     public int[] getRemovePiece() { return removePiece;   }
 
     public void setRemovePiece(int[] removePiece) { this.removePiece = removePiece; }
+
+    public Move getMove() {  return move;  }
+
+    public void setMove(Move move) {  this.move = move;  }
 }

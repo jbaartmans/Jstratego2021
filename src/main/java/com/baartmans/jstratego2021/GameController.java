@@ -1,9 +1,6 @@
 package com.baartmans.jstratego2021;
 
-import com.baartmans.jstratego2021.gamelogic.GameState;
-import com.baartmans.jstratego2021.gamelogic.Move;
-import com.baartmans.jstratego2021.gamelogic.MoveResponse;
-import com.baartmans.jstratego2021.gamelogic.Pawn;
+import com.baartmans.jstratego2021.gamelogic.*;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +12,7 @@ public class GameController {
     @CrossOrigin
     @GetMapping("/version")
     public String getVersion() {
-        return  "JStratego2021 version 0.1 ";
+        return  "JStratego2021 version 0.3";
     }
 
     @CrossOrigin
@@ -33,13 +30,26 @@ public class GameController {
         int[] to = {0,5};
         Move move = new Move(from,to);
         return  gs.doMove(gamestate, move,2);
-        //return gamestate;
     }
 
     @CrossOrigin
     @RequestMapping(value = "/domove/ai", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public MoveResponse doMoveAI(@RequestBody GameState gamestate) {
         return  gs.doMoveAI(gamestate);
+    }
+
+
+    //TEST met input o.b.v GameInput Object
+    @CrossOrigin
+    @RequestMapping(value = "/domove/input", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public MoveResponse doMovInput(@RequestBody GameInput gameinput) {
+        return  gs.doMove(gameinput.getGameState(), gameinput.getMove(),2);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/domove/input/ai", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public MoveResponse doMoveAI(@RequestBody GameInput gameinput) {
+        return  gs.doMoveAI(gameinput.getGameState());
     }
 
 //    @GetMapping("/error")

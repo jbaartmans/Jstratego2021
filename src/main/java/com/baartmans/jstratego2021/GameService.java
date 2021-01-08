@@ -204,7 +204,7 @@ public class GameService {
             if (pawn.getLocation()[0] == move.getTo()[0]
                     && pawn.getLocation()[1] == move.getTo()[1]) {
                 //Move is to an enemy piece!
-                return doAttack(currentPawn, pawn, team);
+                return doAttack(currentPawn, pawn, team, move);
             }
         }
 
@@ -212,11 +212,12 @@ public class GameService {
         return new MoveResponse(
                 true,
                 "Piece moved to [" + move.getTo()[0] + "," + move.getTo()[1] + "]",
-                GameStatus.PLAYING.toString()
+                GameStatus.PLAYING.toString(),
+                move
         );
     }
 
-    private MoveResponse doAttack(Pawn attackingPawn, Pawn defendingPawn, int team) {
+    private MoveResponse doAttack(Pawn attackingPawn, Pawn defendingPawn, int team, Move move) {
 
         String attackingPawnType = attackingPawn.getType();
         String defendingPawnType = defendingPawn.getType();
@@ -246,6 +247,7 @@ public class GameService {
                         true,
                         message2,
                         GameStatus.PLAYING.toString(),
+                        move,
                         defendingPawn.getLocation()
                 );
             } else {
@@ -254,6 +256,7 @@ public class GameService {
                         true,
                         message3,
                         GameStatus.PLAYING.toString(),
+                        move,
                         attackingPawn.getLocation()
                 );
             }
@@ -266,6 +269,7 @@ public class GameService {
                     true,
                      message4,
                     GameStatus.PLAYING.toString(),
+                    move,
                     defendingPawn.getLocation()
             );
         }
@@ -284,6 +288,7 @@ public class GameService {
                     true,
                     message5,
                     GameStatus.PLAYING.toString(),
+                    move,
                     defendingPawn.getLocation()
             );
         } else {
@@ -293,6 +298,7 @@ public class GameService {
                     true,
                     message6,
                     GameStatus.PLAYING.toString(),
+                    move,
                     attackingPawn.getLocation()
             );
         }
