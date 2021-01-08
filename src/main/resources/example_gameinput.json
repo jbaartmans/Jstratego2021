@@ -1,0 +1,578 @@
+{
+  "gameState": {
+    "team1": [
+      {
+        "type": "Bomb",
+        "location": [
+          0,
+          0
+        ]
+      },
+      {
+        "type": "Captain",
+        "location": [
+          1,
+          0
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          2,
+          0
+        ]
+      },
+      {
+        "type": "Bomb",
+        "location": [
+          3,
+          0
+        ]
+      },
+      {
+        "type": "Captain",
+        "location": [
+          4,
+          0
+        ]
+      },
+      {
+        "type": "Sergeant",
+        "location": [
+          5,
+          0
+        ]
+      },
+      {
+        "type": "Lieutenant",
+        "location": [
+          6,
+          0
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          7,
+          0
+        ]
+      },
+      {
+        "type": "Sergeant",
+        "location": [
+          8,
+          0
+        ]
+      },
+      {
+        "type": "Miner",
+        "location": [
+          9,
+          0
+        ]
+      },
+      {
+        "type": "Miner",
+        "location": [
+          0,
+          1
+        ]
+      },
+      {
+        "type": "Captain",
+        "location": [
+          1,
+          1
+        ]
+      },
+      {
+        "type": "Miner",
+        "location": [
+          2,
+          1
+        ]
+      },
+      {
+        "type": "Lieutenant",
+        "location": [
+          3,
+          1
+        ]
+      },
+      {
+        "type": "Miner",
+        "location": [
+          4,
+          1
+        ]
+      },
+      {
+        "type": "Major",
+        "location": [
+          5,
+          1
+        ]
+      },
+      {
+        "type": "Bomb",
+        "location": [
+          6,
+          1
+        ]
+      },
+      {
+        "type": "Bomb",
+        "location": [
+          7,
+          1
+        ]
+      },
+      {
+        "type": "Colonel",
+        "location": [
+          8,
+          1
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          9,
+          1
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          0,
+          2
+        ]
+      },
+      {
+        "type": "Colonel",
+        "location": [
+          1,
+          2
+        ]
+      },
+      {
+        "type": "Lieutenant",
+        "location": [
+          2,
+          2
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          3,
+          2
+        ]
+      },
+      {
+        "type": "Bomb",
+        "location": [
+          4,
+          2
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          5,
+          2
+        ]
+      },
+      {
+        "type": "Lieutenant",
+        "location": [
+          6,
+          2
+        ]
+      },
+      {
+        "type": "Sergeant",
+        "location": [
+          7,
+          2
+        ]
+      },
+      {
+        "type": "General",
+        "location": [
+          8,
+          2
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          9,
+          2
+        ]
+      },
+      {
+        "type": "Major",
+        "location": [
+          0,
+          3
+        ]
+      },
+      {
+        "type": "Bomb",
+        "location": [
+          1,
+          3
+        ]
+      },
+      {
+        "type": "Captain",
+        "location": [
+          2,
+          3
+        ]
+      },
+      {
+        "type": "Major",
+        "location": [
+          3,
+          3
+        ]
+      },
+      {
+        "type": "Spy",
+        "location": [
+          4,
+          3
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          5,
+          3
+        ]
+      },
+      {
+        "type": "Marshal",
+        "location": [
+          6,
+          3
+        ]
+      },
+      {
+        "type": "Sergeant",
+        "location": [
+          7,
+          3
+        ]
+      },
+      {
+        "type": "Miner",
+        "location": [
+          8,
+          3
+        ]
+      },
+      {
+        "type": "Flag",
+        "location": [
+          9,
+          3
+        ]
+      }
+    ],
+    "team2": [
+      {
+        "type": "Sergeant",
+        "location": [
+          0,
+          6
+        ]
+      },
+      {
+        "type": "Lieutenant",
+        "location": [
+          1,
+          6
+        ]
+      },
+      {
+        "type": "Sergeant",
+        "location": [
+          2,
+          6
+        ]
+      },
+      {
+        "type": "Major",
+        "location": [
+          3,
+          6
+        ]
+      },
+      {
+        "type": "Lieutenant",
+        "location": [
+          4,
+          6
+        ]
+      },
+      {
+        "type": "Captain",
+        "location": [
+          5,
+          6
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          6,
+          6
+        ]
+      },
+      {
+        "type": "Bomb",
+        "location": [
+          7,
+          6
+        ]
+      },
+      {
+        "type": "Bomb",
+        "location": [
+          8,
+          6
+        ]
+      },
+      {
+        "type": "Major",
+        "location": [
+          9,
+          6
+        ]
+      },
+      {
+        "type": "Miner",
+        "location": [
+          0,
+          7
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          1,
+          7
+        ]
+      },
+      {
+        "type": "Marshal",
+        "location": [
+          2,
+          7
+        ]
+      },
+      {
+        "type": "Miner",
+        "location": [
+          3,
+          7
+        ]
+      },
+      {
+        "type": "Bomb",
+        "location": [
+          4,
+          7
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          5,
+          7
+        ]
+      },
+      {
+        "type": "Sergeant",
+        "location": [
+          6,
+          7
+        ]
+      },
+      {
+        "type": "Miner",
+        "location": [
+          7,
+          7
+        ]
+      },
+      {
+        "type": "Captain",
+        "location": [
+          8,
+          7
+        ]
+      },
+      {
+        "type": "Lieutenant",
+        "location": [
+          9,
+          7
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          0,
+          8
+        ]
+      },
+      {
+        "type": "Flag",
+        "location": [
+          1,
+          8
+        ]
+      },
+      {
+        "type": "Bomb",
+        "location": [
+          2,
+          8
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          3,
+          8
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          4,
+          8
+        ]
+      },
+      {
+        "type": "Major",
+        "location": [
+          5,
+          8
+        ]
+      },
+      {
+        "type": "Miner",
+        "location": [
+          6,
+          8
+        ]
+      },
+      {
+        "type": "Sergeant",
+        "location": [
+          7,
+          8
+        ]
+      },
+      {
+        "type": "Bomb",
+        "location": [
+          8,
+          8
+        ]
+      },
+      {
+        "type": "Captain",
+        "location": [
+          9,
+          8
+        ]
+      },
+      {
+        "type": "Miner",
+        "location": [
+          0,
+          9
+        ]
+      },
+      {
+        "type": "Colonel",
+        "location": [
+          1,
+          9
+        ]
+      },
+      {
+        "type": "Captain",
+        "location": [
+          2,
+          9
+        ]
+      },
+      {
+        "type": "Lieutenant",
+        "location": [
+          3,
+          9
+        ]
+      },
+      {
+        "type": "Colonel",
+        "location": [
+          4,
+          9
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          5,
+          9
+        ]
+      },
+      {
+        "type": "Spy",
+        "location": [
+          6,
+          9
+        ]
+      },
+      {
+        "type": "Bomb",
+        "location": [
+          7,
+          9
+        ]
+      },
+      {
+        "type": "General",
+        "location": [
+          8,
+          9
+        ]
+      },
+      {
+        "type": "Scout",
+        "location": [
+          9,
+          9
+        ]
+      }
+    ]
+  },
+  "move": {
+    "from": [
+      0,
+      6
+    ],
+    "to": [
+      0,
+      5
+    ]
+  }
+}
