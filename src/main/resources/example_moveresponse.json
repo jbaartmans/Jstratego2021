@@ -1,0 +1,19 @@
+{
+  "responseMessage": "Kaboom! An enemy Spy has been blown up by your Bomb!",
+  "gameStatus": "PLAYING",
+  "removePiece": [
+    4,
+    3
+  ],
+  "move": {
+    "from": [
+      4,
+      3
+    ],
+    "to": [
+      7,
+      6
+    ]
+  },
+  "validMove": true
+}
