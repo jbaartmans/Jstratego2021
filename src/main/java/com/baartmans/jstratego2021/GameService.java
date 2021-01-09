@@ -131,7 +131,6 @@ public class GameService {
 
         //Controleer of het stuk bestaat
         for (Pawn pawn : currentTeam) {
-            System.out.println(pawn.getLocation()[0] + "::" + pawn.getLocation()[1]);
             if (pawn.getLocation()[0] == move.getFrom()[0]
                     && pawn.getLocation()[1] == move.getFrom()[1]) {
                 currentPawn = pawn;
@@ -156,10 +155,10 @@ public class GameService {
         }
 
         //Left Lake
-        if ((move.getTo()[0] == 4 && move.getTo()[1] == 2)
-                || move.getTo()[0] == 4 && move.getTo()[1] == 3
-                || move.getTo()[0] == 5 && move.getTo()[1] == 2
-                || move.getTo()[0] == 5 && move.getTo()[1] == 3) {
+        if ((move.getTo()[1] == 4 && move.getTo()[0] == 2)
+                || (move.getTo()[1] == 4 && move.getTo()[0] == 3)
+                || (move.getTo()[1] == 5 && move.getTo()[0] == 2)
+                || (move.getTo()[1] == 5 && move.getTo()[0] == 3)) {
             return new MoveResponse(
                     false,
                     "You can't move to a lake",
@@ -167,11 +166,11 @@ public class GameService {
             );
         }
 
-        //Right lake
-        if ((move.getTo()[0] == 4 && move.getTo()[1] == 6)
-                || move.getTo()[0] == 4 && move.getTo()[1] == 7
-                || move.getTo()[0] == 5 && move.getTo()[1] == 6
-                || move.getTo()[0] == 5 && move.getTo()[1] == 7) {
+        // Right lake
+        if ((move.getTo()[1] == 4 && move.getTo()[0] == 6)
+                || (move.getTo()[1] == 4 && move.getTo()[0] == 7)
+                || (move.getTo()[1] == 5 && move.getTo()[0] == 6)
+                || (move.getTo()[1] == 5 && move.getTo()[0] == 7)) {
 
             return new MoveResponse(
                     false,
@@ -267,9 +266,7 @@ public class GameService {
         }
 
         //Bepaal de rangen van de stukken
-        System.out.println("attackingPawnType" + attackingPawnType);
         int attackingPawnRank = GameService.typesAndRanks.get(attackingPawnType);
-        System.out.println("defendingPawnType" + defendingPawnType);
         int defendingPawnRank = GameService.typesAndRanks.get(defendingPawnType);
 
         //Bij gelijke rangen wint het het aanvallende stuk
