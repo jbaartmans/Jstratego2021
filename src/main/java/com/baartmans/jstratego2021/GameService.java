@@ -5,6 +5,7 @@ import com.baartmans.jstratego2021.gamelogic.Move;
 import com.baartmans.jstratego2021.gamelogic.MoveResponse;
 import com.baartmans.jstratego2021.gamelogic.Pawn;
 import com.baartmans.jstratego2021.gamelogic.enums.GameStatus;
+import com.baartmans.jstratego2021.util.Random;
 import java.util.*;
 
 public class GameService {
@@ -55,7 +56,7 @@ public class GameService {
 
             for (int x = 0; x < 10; x++) {
                 int[] team1Location = {x, y};
-                int random = getRandom(pieces.size());
+                int random = Random.getRandom(pieces.size());
                 team[counter] = new Pawn(pieces.get(random).toString(), team1Location);
                 pieces.remove(random);
                 counter++;
@@ -113,11 +114,7 @@ public class GameService {
         return pieces;
     }
 
-    // TODO move this function to util class
-    // Read more: https://www.java67.com/2015/01/how-to-get-random-number-between-0-and-1-java.html#ixzz6iOvlQk81
-    public static int getRandom(int max) { // return (int) (Math.random()*max); //incorrect always return zero
-        return (int) (Math.random() * max);
-    }
+
 
     public MoveResponse doMove(GameState gameState, Move move, int team) {
 
@@ -133,17 +130,12 @@ public class GameService {
         Pawn currentPawn = null;
 
         //Controleer of het stuk bestaat
-        System.out.println("Input Move");
-        System.out.println(move.getFrom()[0] + ":" + move.getFrom()[1]);
-
         for (Pawn pawn : currentTeam) {
             System.out.println(pawn.getLocation()[0] + "::" + pawn.getLocation()[1]);
             if (pawn.getLocation()[0] == move.getFrom()[0]
                     && pawn.getLocation()[1] == move.getFrom()[1]) {
-                System.out.println("Stuk gevonden, het is een" + pawn.getType());
                 currentPawn = pawn;
                 break;
-
             }
         }
 
@@ -310,7 +302,7 @@ public class GameService {
 
         // Get a random pawn from the AI team (== team1)
         while (currentPawn == null) {
-            int random = getRandom(currentTeam.length - 1);
+            int random = Random.getRandom(currentTeam.length - 1);
             currentPawn = currentTeam[random];
             String currentPawnType = currentPawn.getType();
             if (currentPawnType.equalsIgnoreCase("Bomb") || currentPawnType.equalsIgnoreCase("Flag")) {
@@ -319,8 +311,6 @@ public class GameService {
             }
         }
 
-        System.out.println("Gekozen Pawn::" + currentPawn.getType().toString() + "Location::" + currentPawn.getLocation()[0] + ":" + currentPawn.getLocation()[1]);
-
         //Welke plekken op het speelveld kunnen we nog naartoe, waar we zelf niet staan
         List<Pawn> availableLocations = getAvailableLocations(currentTeam);
         MoveResponse validMoveResponse = null;
@@ -328,7 +318,7 @@ public class GameService {
         // Proberen om een valide move te maken
         while(validMoveResponse == null){
             //Haal een random locatie op waar nien een stuk van het eigen team staat
-            int random = getRandom(availableLocations.size());
+            int random = Random.getRandom(availableLocations.size());
             int[] proposedLocation = availableLocations.get(random).getLocation();
 
             //Nieuwe move samenstellen
@@ -336,8 +326,6 @@ public class GameService {
 
             //Do de move
             MoveResponse proposedMoveResponse = doMove(gameState, proposedMove,1);
-
-            System.out.println("Voorstel voor een move gedaan");
 
             //Is het een valide move, dan kunnen we uit de loop breaken
             if(proposedMoveResponse.isValidMove()){
@@ -372,7 +360,6 @@ public class GameService {
                 }
             }
         }
-
         return allAvailableLocations;
     }
 }
