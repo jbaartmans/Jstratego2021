@@ -191,6 +191,33 @@ public class GameService {
             }
         }
 
+        // Controleer of het stuk niet te ver wil reizen
+
+        boolean moveToIsInSurroundingPosition = false;
+        List<Pawn> surroundingPositions = getSurroundingPositions(move.getFrom(),currentTeam);
+
+        System.out.println("SurroundingPositions");
+        System.out.println(surroundingPositions);
+
+        Iterator<Pawn> iterator = surroundingPositions.iterator();
+        while (iterator.hasNext()){
+
+            Pawn availablePawn = iterator.next();
+            int[] currLocation = availablePawn.getLocation();
+
+            if(currLocation[0] == move.getTo()[0] && currLocation[1] == move.getTo()[1]){
+                moveToIsInSurroundingPosition = true;
+            }
+        }
+
+         if(!moveToIsInSurroundingPosition){
+             return new MoveResponse(
+                     false,
+                     "Piece cannot move that far",
+                     GameStatus.PLAYING.toString()
+             );
+         }
+
         for (Pawn pawn : enemyTeam) {
             if (pawn.getLocation()[0] == move.getTo()[0]
                     && pawn.getLocation()[1] == move.getTo()[1]) {
@@ -296,9 +323,10 @@ public class GameService {
     public MoveResponse doMoveAI(GameState gameState) {
         Pawn[] currentTeam = gameState.getTeam1();
         Pawn currentPawn = null;
+        List<Pawn> surroundingPositions = null;
 
         // Get a random pawn from the AI team (== team1)
-        while (currentPawn == null) {
+        while (currentPawn == null && surroundingPositions == null) {
             int random = Random.getRandom(currentTeam.length - 1);
             currentPawn = currentTeam[random];
             String currentPawnType = currentPawn.getType();
@@ -306,17 +334,24 @@ public class GameService {
                 // Do not select the Bomb or Pawn as piece to move
                 currentPawn = null;
             }
+            else {
+                surroundingPositions = getSurroundingPositions( currentPawn.getLocation(), currentTeam);
+                System.out.println("surroundingPositions.size: "+ surroundingPositions.size());
+
+                if(surroundingPositions.size() == 0){
+                    surroundingPositions = null;
+                    currentPawn = null;
+                }
+            }
         }
 
-        //Welke plekken op het speelveld kunnen we nog naartoe, waar we zelf niet staan
-        List<Pawn> availableLocations = getAvailableLocations(currentTeam);
         MoveResponse validMoveResponse = null;
 
         // Proberen om een valide move te maken
         while(validMoveResponse == null){
-            //Haal een random locatie op waar nien een stuk van het eigen team staat
-            int random = Random.getRandom(availableLocations.size());
-            int[] proposedLocation = availableLocations.get(random).getLocation();
+            //Haal een random locatie op waar niet een stuk van het eigen team staat
+            int random = Random.getRandom(surroundingPositions.size());
+            int[] proposedLocation = surroundingPositions.get(random).getLocation();
 
             //Nieuwe move samenstellen
             Move proposedMove = new Move(currentPawn.getLocation(), proposedLocation);
@@ -328,6 +363,9 @@ public class GameService {
             if(proposedMoveResponse.isValidMove()){
                 validMoveResponse = proposedMoveResponse;
                 break;
+            } else {
+                // For debug purposes
+                System.out.println(proposedMoveResponse.getResponseMessage());
             }
         }
 
@@ -358,5 +396,67 @@ public class GameService {
             }
         }
         return allAvailableLocations;
+    }
+
+    private List<Pawn> getSurroundingPositions(int[] location, Pawn[] team){
+
+        List<Pawn> surroundingLocations = new ArrayList<>();
+        //int[] from  = move.getFrom();
+        int xFrom = location[0];
+        int yFrom = location[1];
+
+        //4 scenarios; voor achter, links rechts
+        int xFromPositive = xFrom +1;
+        checkSurroundingPosition(xFromPositive, yFrom, team, surroundingLocations);
+
+        int xFromNegative = xFrom - 1;
+        checkSurroundingPosition(xFromNegative, yFrom, team, surroundingLocations);
+
+        int yFromPositive = yFrom +1;
+        checkSurroundingPosition(xFrom, yFromPositive, team, surroundingLocations);
+
+        int yFromNegative = yFrom - 1;
+        checkSurroundingPosition(xFrom, yFromNegative, team, surroundingLocations);
+
+        return surroundingLocations;
+    }
+
+    // Controleer of de omliggende locatie vrij en voeg deze toe aan lijst en return deze
+    private List<Pawn> checkSurroundingPosition(int x, int y, Pawn[] team, List<Pawn> surroundingLocations){
+
+        //Valt het stuk wel binnen het speel veld?
+        if( x >=0 && y >= 0 &&  x <= 9 && y <= 9){
+            boolean locationOccupied = false;
+            boolean isLakeLocation = false;
+            for (Pawn pawn : team) {
+                int[] currentPawnLocation = pawn.getLocation();
+                if (currentPawnLocation[0] == x  && currentPawnLocation[1] == y) {
+                    //System.out.println("Helaas deze positie is bezet door een eigen stuk: " + x + ":" + y);
+                    locationOccupied = true;
+                }
+            }
+
+            //Left Lake
+            if ((y == 4 && x == 2)
+                    || (y == 4 && x == 3)
+                    || (y == 5 && x == 2)
+                    || (y == 5 && x == 3)) {
+                isLakeLocation = true;
+            }
+
+            // Right lake
+            if ((y == 4 && x == 6)
+                    || (y == 4 && x == 7)
+                    || (y == 5 && x == 6)
+                    || (y == 5 && x == 7)) {
+                isLakeLocation = true;
+            }
+
+            if(!locationOccupied && !isLakeLocation){
+                int[] surroundingLocation = {x, y};
+                surroundingLocations.add(new Pawn("EMPTY", surroundingLocation));
+            }
+        }
+        return surroundingLocations;
     }
 }
