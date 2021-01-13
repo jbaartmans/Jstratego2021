@@ -447,7 +447,7 @@ public class GameService {
         int xFromPositive = xFrom +1;
         //Voor
         while(true) {
-            Pawn xFromPositivePawn = checkSurroundingPosition(xFromPositive, yFrom, currentTeam, enemyTeam, false);
+            Pawn xFromPositivePawn = checkSurroundingPosition(xFromPositive, yFrom, currentTeam, enemyTeam, true);
             if(xFromPositivePawn != null){
                 surroundingLocations.add(xFromPositivePawn);
                 if(xFromPositivePawn.getType().equalsIgnoreCase("ENEMY")) {
@@ -463,7 +463,7 @@ public class GameService {
         //Achter
         int xFromNegative = xFrom - 1;
         while(true) {
-            Pawn xFromNegativePawn = checkSurroundingPosition(xFromNegative, yFrom, currentTeam, enemyTeam, false );
+            Pawn xFromNegativePawn = checkSurroundingPosition(xFromNegative, yFrom, currentTeam, enemyTeam, true );
             if(xFromNegativePawn != null){
                 surroundingLocations.add(xFromNegativePawn);
                 if(xFromNegativePawn.getType().equalsIgnoreCase("ENEMY")) {
@@ -479,7 +479,7 @@ public class GameService {
         //Links
         int yFromPositive = yFrom +1;
         while(true) {
-            Pawn yFromPositivePawn = checkSurroundingPosition(xFrom, yFromPositive, currentTeam, enemyTeam, false);
+            Pawn yFromPositivePawn = checkSurroundingPosition(xFrom, yFromPositive, currentTeam, enemyTeam, true);
             if(yFromPositivePawn != null){
                 surroundingLocations.add(yFromPositivePawn);
                 if(yFromPositivePawn.getType().equalsIgnoreCase("ENEMY")) {
@@ -495,7 +495,7 @@ public class GameService {
         //Rechts
         int yFromNegative = yFrom - 1;
         while(true) {
-            Pawn yFromNegativePawn = checkSurroundingPosition(xFrom, yFromNegative, currentTeam,enemyTeam, false );
+            Pawn yFromNegativePawn = checkSurroundingPosition(xFrom, yFromNegative, currentTeam,enemyTeam, true );
             if(yFromNegativePawn != null){
                 surroundingLocations.add(yFromNegativePawn);
                 if(yFromNegativePawn.getType().equalsIgnoreCase("ENEMY")) {
