@@ -154,24 +154,7 @@ public class GameService {
             );
         }
 
-        //Left Lake
-        if ((move.getTo()[1] == 4 && move.getTo()[0] == 2)
-                || (move.getTo()[1] == 4 && move.getTo()[0] == 3)
-                || (move.getTo()[1] == 5 && move.getTo()[0] == 2)
-                || (move.getTo()[1] == 5 && move.getTo()[0] == 3)) {
-            return new MoveResponse(
-                    false,
-                    "You can't move to a lake",
-                    GameStatus.PLAYING.toString()
-            );
-        }
-
-        // Right lake
-        if ((move.getTo()[1] == 4 && move.getTo()[0] == 6)
-                || (move.getTo()[1] == 4 && move.getTo()[0] == 7)
-                || (move.getTo()[1] == 5 && move.getTo()[0] == 6)
-                || (move.getTo()[1] == 5 && move.getTo()[0] == 7)) {
-
+        if(isLakeLocation(move.getTo()[0],move.getTo()[1])){
             return new MoveResponse(
                     false,
                     "You can't move to a lake",
@@ -517,7 +500,6 @@ public class GameService {
         //Valt het stuk wel binnen het speel veld?
         if( x >=0 && y >= 0 &&  x <= 9 && y <= 9){
             boolean locationOccupied = false;
-            boolean isLakeLocation = false;
 
             if(checkEnemyTeam){
                 boolean isEnemyLocation = false;
@@ -537,8 +519,6 @@ public class GameService {
                 }
             }
 
-
-
             for (Pawn pawn : currentTeam) {
                 int[] currentPawnLocation = pawn.getLocation();
                 if (currentPawnLocation[0] == x  && currentPawnLocation[1] == y) {
@@ -547,28 +527,32 @@ public class GameService {
                 }
             }
 
-            //Left Lake
-            if ((y == 4 && x == 2)
-                    || (y == 4 && x == 3)
-                    || (y == 5 && x == 2)
-                    || (y == 5 && x == 3)) {
-                isLakeLocation = true;
-            }
-
-            // Right lake
-            if ((y == 4 && x == 6)
-                    || (y == 4 && x == 7)
-                    || (y == 5 && x == 6)
-                    || (y == 5 && x == 7)) {
-                isLakeLocation = true;
-            }
-
-            if(!locationOccupied && !isLakeLocation){
+            if(!locationOccupied && !isLakeLocation(x,y)){
                 int[] surroundingLocation = {x, y};
                 return new Pawn("EMPTY", surroundingLocation);
             }
         }
 
         return  null;
+    }
+
+    private boolean isLakeLocation(int x, int y){
+        //Left Lake
+        if ((y == 4 && x == 2)
+                || (y == 4 && x == 3)
+                || (y == 5 && x == 2)
+                || (y == 5 && x == 3)) {
+             return true;
+        }
+
+        // Right lake
+        if ((y == 4 && x == 6)
+                || (y == 4 && x == 7)
+                || (y == 5 && x == 6)
+                || (y == 5 && x == 7)) {
+            return true;
+        }
+
+        return false;
     }
 }
