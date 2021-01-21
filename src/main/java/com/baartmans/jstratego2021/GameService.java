@@ -66,9 +66,7 @@ public class GameService {
     }
 
     private LinkedList<String> getStartingPiecesInGame() {
-
         LinkedList pieces = new LinkedList<String>();
-
 //        Rang	Aantal per kleur
 //        Bom	6
 //        Maarschalk	1
@@ -95,16 +93,12 @@ public class GameService {
         Collections.addAll(pieces, "Major", "Major", "Major");
         // 4 Kapiteins
         Collections.addAll(pieces, "Captain", "Captain", "Captain", "Captain");
-
         // 4 Luitenanten
         Collections.addAll(pieces, "Lieutenant", "Lieutenant", "Lieutenant", "Lieutenant");
-
         // 4 Sergeanten
         Collections.addAll(pieces, "Sergeant", "Sergeant", "Sergeant", "Sergeant");
-
         // 5 Mineurs
         Collections.addAll(pieces, "Miner", "Miner", "Miner", "Miner", "Miner");
-
         // 8 Verkenners
         Collections.addAll(pieces, "Scout", "Scout", "Scout", "Scout", "Scout", "Scout", "Scout", "Scout");
         // 1 Spion
@@ -114,10 +108,7 @@ public class GameService {
         return pieces;
     }
 
-
-
     public MoveResponse doMove(GameState gameState, Move move, int team) {
-
         Pawn[] currentTeam = gameState.getTeam2();
         Pawn[] enemyTeam = gameState.getTeam1();
 
@@ -221,10 +212,8 @@ public class GameService {
     }
 
     private MoveResponse doAttack(Pawn attackingPawn, Pawn defendingPawn, int team, Move move) {
-
         String attackingPawnType = attackingPawn.getType();
         String defendingPawnType = defendingPawn.getType();
-
         //Is this move by the AI (team == 1) or the human player(team == 2)
         boolean humanTeam = team == 2;
 
@@ -513,7 +502,7 @@ public class GameService {
                 }
 
                 if(isEnemyLocation){
-                    //Als het de locatie van de vijand is, dan geven we wel de ze locatie terug
+                    //Als het de locatie van de vijand is, dan geven we wel deze locatie terug
                     int[] surroundingLocation = {x, y};
                     return new Pawn("ENEMY", surroundingLocation);
                 }

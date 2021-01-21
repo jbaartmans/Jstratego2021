@@ -29,7 +29,7 @@ public class GameController {
 
     @CrossOrigin
     @RequestMapping(value = "/domove/input", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public MoveResponse doMovInput(@RequestBody GameInput gameinput) {
+    public MoveResponse doMoveInput(@RequestBody GameInput gameinput) {
         return  gs.doMove(gameinput.getGameState(), gameinput.getMove(),2);
     }
 
