@@ -372,91 +372,54 @@ public class GameService {
         int yFrom = currentPawn.getLocation()[1];
         boolean isScout = currentPawn.getType().equalsIgnoreCase("Scout");
 
-        //4 scenarios; voor achter, links rechts
-        int xFromPositive = xFrom +1;
-        //Voor
-        while(true) {
-            Pawn xFromPositivePawn = checkSurroundingPosition(xFromPositive, yFrom, currentTeam, enemyTeam);
-            if(xFromPositivePawn != null){
-                surroundingLocations.add(xFromPositivePawn);
-                if(xFromPositivePawn.getType().equalsIgnoreCase("ENEMY")) {
-                    //Dit stuk is van de vijand, voeg dit stuk nog wel toe, maar breek uit de loop daarna
+        //Loop 4 scenarios door;
+        for(int scenario = 0; scenario< 4; scenario++){
+            // Begin ieder scenario met initiele positie van het stuk
+            int currentXFrom = xFrom;
+            int currentYFrom = yFrom;
+
+            while(true) {
+                //Wat is het volgende vakje gebaseerd op een van de 4 scenario's ?
+                switch (scenario){
+                    case 0:
+                        //Rechts
+                        currentXFrom++;
+                        break;
+                    case 1:
+                        //Links
+                        currentXFrom--;
+                        break;
+                    case 2:
+                        //Achter
+                        currentYFrom++;
+                        break;
+                    case 3:
+                        //Voor
+                        currentYFrom--;
+                        break;
+                }
+
+                Pawn checkedPawn = checkSurroundingPosition(currentXFrom, currentYFrom, currentTeam, enemyTeam);
+                if(checkedPawn != null){
+                    surroundingLocations.add(checkedPawn);
+                    if(checkedPawn.getType().equalsIgnoreCase("ENEMY")) {
+                        //Dit stuk is van de vijand, voeg dit stuk nog wel toe, maar breek uit de loop daarna
+                        break;
+                    }
+                } else {
                     break;
                 }
-            } else {
-                break;
-            }
-            if(!isScout){
-                //Als het geen Scout is, dan mag er maar 1 vakje gelopen worden
-                break;
-            }
-            xFromPositive++;
-        }
 
-        //Achter
-        int xFromNegative = xFrom - 1;
-        while(true) {
-            Pawn xFromNegativePawn = checkSurroundingPosition(xFromNegative, yFrom, currentTeam, enemyTeam);
-            if(xFromNegativePawn != null){
-                surroundingLocations.add(xFromNegativePawn);
-                if(xFromNegativePawn.getType().equalsIgnoreCase("ENEMY")) {
-                    //Dit stuk is van de vijand, voeg dit stuk nog wel toe, maar breek uit de loop daarna
+                if(!isScout){
+                    //Als het geen Scout is, dan mag er maar 1 vakje gelopen worden
                     break;
                 }
-            } else {
-                break;
             }
-            if(!isScout){
-                //Als het geen Scout is, dan mag er maar 1 vakje gelopen worden
-                break;
-            }
-            xFromNegative--;
         }
-
-        //Links
-        int yFromPositive = yFrom +1;
-        while(true) {
-            Pawn yFromPositivePawn = checkSurroundingPosition(xFrom, yFromPositive, currentTeam, enemyTeam);
-            if(yFromPositivePawn != null){
-                surroundingLocations.add(yFromPositivePawn);
-                if(yFromPositivePawn.getType().equalsIgnoreCase("ENEMY")) {
-                    //Dit stuk is van de vijand, voeg dit stuk nog wel toe, maar breek uit de loop daarna
-                    break;
-                }
-            } else {
-                break;
-            }
-            if(!isScout){
-                //Als het geen Scout is, dan mag er maar 1 vakje gelopen worden
-                break;
-            }
-            yFromPositive++;
-        }
-
-        //Rechts
-        int yFromNegative = yFrom - 1;
-        while(true) {
-            Pawn yFromNegativePawn = checkSurroundingPosition(xFrom, yFromNegative, currentTeam,enemyTeam);
-            if(yFromNegativePawn != null){
-                surroundingLocations.add(yFromNegativePawn);
-                if(yFromNegativePawn.getType().equalsIgnoreCase("ENEMY")) {
-                    //Dit stuk is van de vijand, voeg dit stuk nog wel toe, maar breek uit de loop daarna
-                    break;
-                }
-            } else {
-                break;
-            }
-            if(!isScout){
-                //Als het geen Scout is, dan mag er maar 1 vakje gelopen worden
-                break;
-            }
-            yFromNegative--;
-        }
-
         return surroundingLocations;
     }
 
-    // Controleer of de omliggende locatie vrij en voeg deze toe aan lijst en return deze
+    // Controleer omliggende locatie
     private Pawn checkSurroundingPosition(int x, int y, Pawn[] currentTeam, Pawn[] enemyTeam){
 
         //Valt het stuk wel binnen het speel veld?
