@@ -165,17 +165,12 @@ public class GameService {
             }
         }
 
-        // Controleer of het stuk niet te ver wil reizen
+        // Controleer of het stuk niet te ver wil lopen
         boolean moveToIsInSurroundingPosition = false;
         List<Pawn> surroundingPositions;
 
-        if(currentPawn.getType().toString().equalsIgnoreCase("Scout")){
-            // De Scout mag verder dan 1 vakje
-            surroundingPositions = getSurroundingPositionsScout(move.getFrom(), currentTeam, enemyTeam);
-        } else {
-            surroundingPositions = getSurroundingPositions(move.getFrom(), currentTeam, enemyTeam);
-        }
-
+        //Haal alle mogelijke locatie's op waar het stuk naartoe mag bewegen
+        surroundingPositions = getSurroundingPositions(currentPawn, currentTeam, enemyTeam);
         Iterator<Pawn> iterator = surroundingPositions.iterator();
         while (iterator.hasNext()){
             Pawn availablePawn = iterator.next();
@@ -310,9 +305,7 @@ public class GameService {
                 currentPawn = null;
             }
             else {
-                surroundingPositions = getSurroundingPositions( currentPawn.getLocation(), currentTeam, enemyTeam);
-                System.out.println("surroundingPositions.size: "+ surroundingPositions.size());
-
+                surroundingPositions = getSurroundingPositions( currentPawn, currentTeam, enemyTeam);
                 if(surroundingPositions.size() == 0){
                     surroundingPositions = null;
                     currentPawn = null;
@@ -373,53 +366,17 @@ public class GameService {
         return allAvailableLocations;
     }
 
-    private List<Pawn> getSurroundingPositions(int[] location, Pawn[] currentTeam, Pawn[] enemyTeam){
-
+    private List<Pawn> getSurroundingPositions(Pawn currentPawn, Pawn[] currentTeam,  Pawn[] enemyTeam){
         List<Pawn> surroundingLocations = new ArrayList<>();
-        int xFrom = location[0];
-        int yFrom = location[1];
+        int xFrom = currentPawn.getLocation()[0];
+        int yFrom = currentPawn.getLocation()[1];
+        boolean isScout = currentPawn.getType().equalsIgnoreCase("Scout");
 
         //4 scenarios; voor achter, links rechts
-        int xFromPositive = xFrom +1;
-        Pawn xFromPositivePawn = checkSurroundingPosition(xFromPositive, yFrom, currentTeam, enemyTeam, false);
-
-        if(xFromPositivePawn != null){
-            surroundingLocations.add(xFromPositivePawn);
-        }
-
-        int xFromNegative = xFrom - 1;
-        Pawn xFromNegativePawn = checkSurroundingPosition(xFromNegative, yFrom, currentTeam, enemyTeam, false );
-        if(xFromNegativePawn != null){
-            surroundingLocations.add(xFromNegativePawn);
-        }
-
-        int yFromPositive = yFrom +1;
-        Pawn yFromPositivePawn = checkSurroundingPosition(xFrom, yFromPositive, currentTeam, enemyTeam, false);
-        if(yFromPositivePawn != null){
-            surroundingLocations.add(yFromPositivePawn);
-        }
-
-        int yFromNegative = yFrom - 1;
-        Pawn yFromNegativePawn =  checkSurroundingPosition(xFrom, yFromNegative, currentTeam,enemyTeam, false );
-
-        if(yFromNegativePawn != null){
-            surroundingLocations.add(yFromNegativePawn);
-        }
-
-        return surroundingLocations;
-    }
-
-    private List<Pawn> getSurroundingPositionsScout(int[] location, Pawn[] currentTeam,  Pawn[] enemyTeam){
-
-        List<Pawn> surroundingLocations = new ArrayList<>();
-        int xFrom = location[0];
-        int yFrom = location[1];
-        //4 scenarios; voor achter, links rechts
-
         int xFromPositive = xFrom +1;
         //Voor
         while(true) {
-            Pawn xFromPositivePawn = checkSurroundingPosition(xFromPositive, yFrom, currentTeam, enemyTeam, true);
+            Pawn xFromPositivePawn = checkSurroundingPosition(xFromPositive, yFrom, currentTeam, enemyTeam, isScout);
             if(xFromPositivePawn != null){
                 surroundingLocations.add(xFromPositivePawn);
                 if(xFromPositivePawn.getType().equalsIgnoreCase("ENEMY")) {
@@ -429,13 +386,17 @@ public class GameService {
             } else {
                 break;
             }
+            if(!isScout){
+                //Als het geen Scout is, dan mag er maar 1 vakje gelopen worden
+                break;
+            }
             xFromPositive++;
         }
 
         //Achter
         int xFromNegative = xFrom - 1;
         while(true) {
-            Pawn xFromNegativePawn = checkSurroundingPosition(xFromNegative, yFrom, currentTeam, enemyTeam, true );
+            Pawn xFromNegativePawn = checkSurroundingPosition(xFromNegative, yFrom, currentTeam, enemyTeam, isScout );
             if(xFromNegativePawn != null){
                 surroundingLocations.add(xFromNegativePawn);
                 if(xFromNegativePawn.getType().equalsIgnoreCase("ENEMY")) {
@@ -445,13 +406,17 @@ public class GameService {
             } else {
                 break;
             }
+            if(!isScout){
+                //Als het geen Scout is, dan mag er maar 1 vakje gelopen worden
+                break;
+            }
             xFromNegative--;
         }
 
         //Links
         int yFromPositive = yFrom +1;
         while(true) {
-            Pawn yFromPositivePawn = checkSurroundingPosition(xFrom, yFromPositive, currentTeam, enemyTeam, true);
+            Pawn yFromPositivePawn = checkSurroundingPosition(xFrom, yFromPositive, currentTeam, enemyTeam, isScout);
             if(yFromPositivePawn != null){
                 surroundingLocations.add(yFromPositivePawn);
                 if(yFromPositivePawn.getType().equalsIgnoreCase("ENEMY")) {
@@ -461,13 +426,17 @@ public class GameService {
             } else {
                 break;
             }
+            if(!isScout){
+                //Als het geen Scout is, dan mag er maar 1 vakje gelopen worden
+                break;
+            }
             yFromPositive++;
         }
 
         //Rechts
         int yFromNegative = yFrom - 1;
         while(true) {
-            Pawn yFromNegativePawn = checkSurroundingPosition(xFrom, yFromNegative, currentTeam,enemyTeam, true );
+            Pawn yFromNegativePawn = checkSurroundingPosition(xFrom, yFromNegative, currentTeam,enemyTeam, isScout );
             if(yFromNegativePawn != null){
                 surroundingLocations.add(yFromNegativePawn);
                 if(yFromNegativePawn.getType().equalsIgnoreCase("ENEMY")) {
@@ -475,6 +444,10 @@ public class GameService {
                     break;
                 }
             } else {
+                break;
+            }
+            if(!isScout){
+                //Als het geen Scout is, dan mag er maar 1 vakje gelopen worden
                 break;
             }
             yFromNegative--;
