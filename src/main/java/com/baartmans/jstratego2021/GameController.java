@@ -22,19 +22,19 @@ public class GameController {
     }
 
     @CrossOrigin
-    @GetMapping("/newgame")
+    @GetMapping("/game/new")
     public GameState newGame() {
         return  gs.newGame();
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/domove/input", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public MoveResponse doMoveInput(@RequestBody GameInput gameinput) {
+    @RequestMapping(value = "/game/move", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public MoveResponse doMove(@RequestBody GameInput gameinput) {
         return  gs.doMove(gameinput.getGameState(), gameinput.getMove(),2);
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/domove/input/ai", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/game/ai", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public MoveResponse doMoveAI(@RequestBody GameInput gameinput) {
         return  gs.doMoveAI(gameinput.getGameState());
     }
