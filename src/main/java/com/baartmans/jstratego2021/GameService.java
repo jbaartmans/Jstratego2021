@@ -305,7 +305,7 @@ public class GameService {
                 currentPawn = null;
             }
             else {
-                surroundingPositions = getSurroundingPositions( currentPawn, currentTeam, enemyTeam);
+                surroundingPositions = getSurroundingPositions(currentPawn, currentTeam, enemyTeam);
                 if(surroundingPositions.size() == 0){
                     surroundingPositions = null;
                     currentPawn = null;
@@ -376,7 +376,7 @@ public class GameService {
         int xFromPositive = xFrom +1;
         //Voor
         while(true) {
-            Pawn xFromPositivePawn = checkSurroundingPosition(xFromPositive, yFrom, currentTeam, enemyTeam, isScout);
+            Pawn xFromPositivePawn = checkSurroundingPosition(xFromPositive, yFrom, currentTeam, enemyTeam);
             if(xFromPositivePawn != null){
                 surroundingLocations.add(xFromPositivePawn);
                 if(xFromPositivePawn.getType().equalsIgnoreCase("ENEMY")) {
@@ -396,7 +396,7 @@ public class GameService {
         //Achter
         int xFromNegative = xFrom - 1;
         while(true) {
-            Pawn xFromNegativePawn = checkSurroundingPosition(xFromNegative, yFrom, currentTeam, enemyTeam, isScout );
+            Pawn xFromNegativePawn = checkSurroundingPosition(xFromNegative, yFrom, currentTeam, enemyTeam);
             if(xFromNegativePawn != null){
                 surroundingLocations.add(xFromNegativePawn);
                 if(xFromNegativePawn.getType().equalsIgnoreCase("ENEMY")) {
@@ -416,7 +416,7 @@ public class GameService {
         //Links
         int yFromPositive = yFrom +1;
         while(true) {
-            Pawn yFromPositivePawn = checkSurroundingPosition(xFrom, yFromPositive, currentTeam, enemyTeam, isScout);
+            Pawn yFromPositivePawn = checkSurroundingPosition(xFrom, yFromPositive, currentTeam, enemyTeam);
             if(yFromPositivePawn != null){
                 surroundingLocations.add(yFromPositivePawn);
                 if(yFromPositivePawn.getType().equalsIgnoreCase("ENEMY")) {
@@ -436,7 +436,7 @@ public class GameService {
         //Rechts
         int yFromNegative = yFrom - 1;
         while(true) {
-            Pawn yFromNegativePawn = checkSurroundingPosition(xFrom, yFromNegative, currentTeam,enemyTeam, isScout );
+            Pawn yFromNegativePawn = checkSurroundingPosition(xFrom, yFromNegative, currentTeam,enemyTeam);
             if(yFromNegativePawn != null){
                 surroundingLocations.add(yFromNegativePawn);
                 if(yFromNegativePawn.getType().equalsIgnoreCase("ENEMY")) {
@@ -457,28 +457,25 @@ public class GameService {
     }
 
     // Controleer of de omliggende locatie vrij en voeg deze toe aan lijst en return deze
-    private Pawn checkSurroundingPosition(int x, int y, Pawn[] currentTeam, Pawn[] enemyTeam, boolean checkEnemyTeam ){
+    private Pawn checkSurroundingPosition(int x, int y, Pawn[] currentTeam, Pawn[] enemyTeam){
 
         //Valt het stuk wel binnen het speel veld?
         if( x >=0 && y >= 0 &&  x <= 9 && y <= 9){
             boolean locationOccupied = false;
+            boolean isEnemyLocation = false;
 
-            if(checkEnemyTeam){
-                boolean isEnemyLocation = false;
-
-                for (Pawn pawn : enemyTeam) {
-                    int[] currentPawnLocation = pawn.getLocation();
-                    if (currentPawnLocation[0] == x  && currentPawnLocation[1] == y) {
-                        isEnemyLocation = true;
-                        break;
-                    }
+            for (Pawn pawn : enemyTeam) {
+                int[] currentPawnLocation = pawn.getLocation();
+                if (currentPawnLocation[0] == x  && currentPawnLocation[1] == y) {
+                    isEnemyLocation = true;
+                    break;
                 }
+            }
 
-                if(isEnemyLocation){
-                    //Als het de locatie van de vijand is, dan geven we wel deze locatie terug
-                    int[] surroundingLocation = {x, y};
-                    return new Pawn("ENEMY", surroundingLocation);
-                }
+            if(isEnemyLocation){
+                //Als het de locatie van de vijand is, dan geven we wel deze locatie terug
+                int[] surroundingLocation = {x, y};
+                return new Pawn("ENEMY", surroundingLocation);
             }
 
             for (Pawn pawn : currentTeam) {
