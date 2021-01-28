@@ -8,10 +8,10 @@ Used as backend for Svelte Stratego made by Casper Broeren.
 
 GET - /version  - Return current version of JStratego2021
 
-GET - /newgame - Get a new random gamestate to start a new game with
+GET - /game/new - Get a new random gamestate to start a new game with
 
-POST /domove/input  - POST a GameInput JSON object. Back-end will evaluate the input Move based on the input GameState and responds with a MoveResponse JSON object. MoveResponse objects tells the front-end the result of the move (e.q. is is valid) and which pieces to remove.
+POST /game/move  - POST a GameInput JSON object. Back-end will evaluate the input Move based on the input GameState and responds with a MoveResponse JSON object. MoveResponse objects tells the front-end the result of the move (e.q. is is valid) and which pieces to remove.
 
-POST /domove/input/AI - POST a GameInput JSON object. An AI will select a move from it's own pieces and returns as MoveResponse JSON object.
+POST /game/ai - POST a GameInput JSON object. An AI will select a move from it's own pieces and returns as MoveResponse JSON object.
 
 See 'resources' for examples of GameInput and MoveResponse
