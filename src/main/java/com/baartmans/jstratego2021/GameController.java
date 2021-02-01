@@ -18,7 +18,7 @@ public class GameController {
     @CrossOrigin
     @GetMapping("/version")
     public String getVersion() {
-        return "JStratego2021 version 0.7";
+        return "JStratego2021 version 0.8";
     }
 
     @CrossOrigin
